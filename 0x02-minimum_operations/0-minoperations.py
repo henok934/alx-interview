@@ -1,11 +1,18 @@
 #!/usr/bin/python3
-def minOperations(n):
-	operations = 0
-	min_operation = 2
-	while n > 1:
-		while n % min_operation == 0:
-			operations += min_operation
-			n /= min_operation
-		min_operation += 1
 
-	return operations
+def minOperations(n: int) -> int:
+    if type(n) != int or n < 2:
+        return 0
+    repr = 1
+    ops = 0
+    status = False
+    while repr < n:
+        if n % repr == 0 and not status:
+            copy = repr
+            ops += 1
+            status = True
+        else:
+            repr += copy
+            ops += 1
+            status = False
+    return ops
