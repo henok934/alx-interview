@@ -2,7 +2,7 @@
 
 def minOperations(n: int) -> int:
     if type(n) != int or n < 2:
-        return 0
+    	return 0  
     repr = 1
     ops = 0
     status = False
