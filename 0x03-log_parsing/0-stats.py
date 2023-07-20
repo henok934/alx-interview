@@ -3,40 +3,46 @@
 This module contains the function that displays the
 stats from the standard input
 """
-import re
-import sys
-status_codes = {200: 0, 301: 0, 400: 0, 401: 0,
-                403: 0, 404: 0, 405: 0, 500: 0}
-print_counter = 0
-size_summation = 0
+
+from sys import stdin
 
 
-def print_logs():
-    """
-    Prints status codes to the logs
-    """
-    print("File size: {}".format(size_summation))
-    for k, v in sorted(status_codes.items()):
-        if v != 0:
-            print("{}: {}".format(k, v))
+def status_printer(total_size, status):
+    """A method to print the status with the format given"""
+    print('File size: {}'.format(total_size))
+    for code, count in sorted(status.items()):
+        if count > 0:
+            print('{}: {:d}'.format(code, count))
 
 
-if __name__ == "__main__":
+def main():
+    """Main method"""
+    status_codes = {'200': 0, '301': 0, '400': 0,
+                    '401': 0, '403': 0, '404': 0, '405': 0, '500': 0}
+    total = 0
+    count = 0
     try:
-        for line in sys.stdin:
-            std_line = line.replace("\n", "")
-            log_list = re.split('- | "|" | " " ', str(std_line))
+        for line in stdin:
+            splited = line.split()
+            if count % 10 == 0 and count != 0:
+                status_printer(total_size=total, status=status_codes)
             try:
-                codes = log_list[-1].split(" ")
-                if int(codes[0]) not in status_codes.keys():
-                    continue
-                status_codes[int(codes[0])] += 1
-                print_counter += 1
-                size_summation += int(codes[1])
-                if print_counter % 10 == 0:
-                    print_logs()
-            except():
+                code = splited[-2]
+                if code in status_codes.keys():
+                    status_codes[code] = status_codes[code] + 1
+            except Exception:
                 pass
-        print_logs()
+            try:
+                total += int(splited[-1])
+            except Exception:
+                pass
+            count += 1
+        status_printer(total_size=total, status=status_codes)
     except KeyboardInterrupt:
-        print_logs()
+        status_printer(total, status_codes)
+        raise
+
+
+if __name__ == '__main__':
+    main()
+
