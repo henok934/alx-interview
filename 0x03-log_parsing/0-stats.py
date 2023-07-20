@@ -3,18 +3,13 @@
 This module contains the function that displays the
 stats from the standard input
 """
-
 from sys import stdin
-
-
 def status_printer(total_size, status):
     """A method to print the status with the format given"""
     print('File size: {}'.format(total_size))
     for code, count in sorted(status.items()):
         if count > 0:
             print('{}: {:d}'.format(code, count))
-
-
 def main():
     """Main method"""
     status_codes = {'200': 0, '301': 0, '400': 0,
@@ -41,8 +36,5 @@ def main():
     except KeyboardInterrupt:
         status_printer(total, status_codes)
         raise
-
-
 if __name__ == '__main__':
     main()
-
