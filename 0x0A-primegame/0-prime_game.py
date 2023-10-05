@@ -1,7 +1,9 @@
 #!/usr/bin/python3
+""" 0-prime_game.py"""
 
 
 def isWinner(x, nums):
+    """is winner method"""
     wins = {'Maria': 0, 'Ben': 0}  # Track the number of wins for each player
 
     for i in range(x):
@@ -21,6 +23,7 @@ def isWinner(x, nums):
 
 
 def isMariaWinner(n):
+    """helper method"""
 
     remaining_nums = [True] * (n + 1)
     remaining_nums[0] = remaining_nums[1] = False
