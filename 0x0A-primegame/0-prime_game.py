@@ -1,34 +1,44 @@
 #!/usr/bin/python3
-""" 0-prime_game.py"""
+"""
+Module: Game of choosing Prime numbers
+"""
+
+
+def primeNumbers(n):
+    """Return list of prime numbers between 1 and n inclusive
+       Args:
+        n (int): upper boundary of range. lower boundary is always 1
+    """
+    primeNos = []
+    filtered = [True] * (n + 1)
+    for prime in range(2, n + 1):
+        if (filtered[prime]):
+            primeNos.append(prime)
+            for i in range(prime, n + 1, prime):
+                filtered[i] = False
+    return primeNos
 
 
 def isWinner(x, nums):
-    """is winner method"""
-    wins = {'Maria': 0, 'Ben': 0}  # Track the number of wins for each player
-
-    for i in range(x):
-        n = nums[i]  # Get the value of n for the current round
-
-        if isMariaWinner(n):  # Check if Maria wins the game for the given n
-            wins['Maria'] += 1
-        else:
-            wins['Ben'] += 1
-
-    if wins['Maria'] > wins['Ben']:
-        return 'Maria'
-    elif wins['Ben'] > wins['Maria']:
-        return 'Ben'
-    else:
+    """
+    Determines winner of Prime Game
+    Args:
+        x (int): no. of rounds of game
+        nums (int): upper limit of range for each round
+    Return:
+        Name of winner (Maria or Ben) or None if winner cannot be found
+    """
+    if x is None or nums is None or x == 0 or nums == []:
         return None
-
-
-def isMariaWinner(n):
-    """helper method"""
-
-    remaining_nums = [True] * (n + 1)
-    remaining_nums[0] = remaining_nums[1] = False
-    for i in range(2, int(n**0.5) + 1):
-        if remaining_nums[i]:
-            for j in range(i * i, n + 1, i):
-                remaining_nums[j] = False
-    return sum(remaining_nums) % 2 != 0
+    Maria = Ben = 0
+    for i in range(x):
+        primeNos = primeNumbers(nums[i])
+        if len(primeNos) % 2 == 0:
+            Ben += 1
+        else:
+            Maria += 1
+    if Maria > Ben:
+        return 'Maria'
+    elif Ben > Maria:
+        return 'Ben'
+    return None
